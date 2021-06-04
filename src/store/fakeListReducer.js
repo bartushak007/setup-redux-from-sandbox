@@ -28,9 +28,9 @@ export const fetchFakeList = createRequestFlow({
     return fetchSimulator();
   },
   type: SET_FAKE_LIST_PENDING_FLOW,
-  initData: [],
+  resetStateData: [],
   showError: true
-  // reduce: s => s
+  // updateResponse: s => s
 });
 
 // store selectors

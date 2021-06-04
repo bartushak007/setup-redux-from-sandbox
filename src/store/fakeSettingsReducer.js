@@ -35,9 +35,9 @@ export const fetchFakeSettings = createRequestFlow({
     return fetchSimulator({ theme: "white" });
   },
   type: SET_FAKE_SETTINGS_PENDING_FLOW,
-  // initData: {},
+  // resetStateData: {},
   showError: true
-  // reduce: s => s
+  // updateResponse: s => s
 });
 
 export const putFakeSettings = createRequestFlow({
@@ -45,9 +45,9 @@ export const putFakeSettings = createRequestFlow({
     return fetchSimulator({ theme: "dark" });
   },
   type: SET_FAKE_SETTINGS_PENDING_FLOW,
-  // initData: {},
+  // resetStateData: {},
   showError: true
-  // reduce: s => s
+  // updateResponse: s => s
 });
 
 // store selectors

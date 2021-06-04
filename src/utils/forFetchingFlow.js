@@ -58,7 +58,7 @@ const failedPayload = (data, err) => {
  * @typedef {object} CreateRequestFlowFirstParam
  * @property {function} pendingAction - async redux-thunk action creator.
  * @property {string} type - redux action type.
- * @property {any} initData - init data.
+ * @property {any} resetStateData - init data.
  */
 
 /**
@@ -70,8 +70,8 @@ const failedPayload = (data, err) => {
 export const createRequestFlow = ({
   pendingAction,
   type,
-  initData,
-  reduce = (data) => data,
+  resetStateData,
+  updateResponse = (data) => data,
   showError
 }) => {
   //save refresh function from closures
@@ -87,12 +87,12 @@ export const createRequestFlow = ({
       const response = await pendingAction();
       newState = {
         type,
-        payload: successPayload(reduce(response))
+        payload: successPayload(updateResponse(response))
       };
     } catch (err) {
       newState = {
         type,
-        payload: failedPayload(initData, err)
+        payload: failedPayload(resetStateData, err)
       };
 
       // show error with refresh function
