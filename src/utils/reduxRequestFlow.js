@@ -1,28 +1,4 @@
-import React from "react";
-import { toast } from "react-toastify";
-
-const toastView = (err, handler) => (
-  <>
-    {err}{" "}
-    <button
-      style={{
-        backgroundColor: "transparent",
-        border: 0,
-        outline: 0,
-        color: "#4287f5",
-        cursor: "pointer",
-        fontSize: "inherit",
-        textDecoration: "underline",
-        padding: 0,
-        margin: 0
-      }}
-      onClick={handler}
-      type="button"
-    >
-      refresh recent request
-    </button>
-  </>
-);
+import { callToastError } from "./callToastError";
 
 const pendingPayload = () => ({
   pending: true,
@@ -36,6 +12,14 @@ const successPayload = (data) => ({
   errorMessage: "",
   done: true,
   data: data
+});
+
+export const getInitRequestFlowData = (init) => ({
+  data: init,
+  pending: false,
+  error: false,
+  errorMessage: "",
+  done: false
 });
 
 const failedPayload = (data, err) => {
@@ -74,7 +58,7 @@ export const createRequestFlow = ({
   updateResponse = (data) => data,
   showError
 }) => {
-  //save refresh function from closures
+  //save refresh async request function in closures
   const closureAction = async (dispatch) => {
     dispatch({
       type,
@@ -97,10 +81,11 @@ export const createRequestFlow = ({
 
       // show error with refresh function
       if (showError) {
-        toast.error(
-          toastView(`${err} (${type})`, () => closureAction(dispatch)),
-          { position: "bottom-center" }
-        );
+        callToastError({
+          errorMessage: err,
+          reducerActionType: type,
+          callHandler: () => closureAction(dispatch)
+        });
       }
     } finally {
       dispatch(newState);
@@ -109,11 +94,3 @@ export const createRequestFlow = ({
 
   return closureAction;
 };
-
-createRequestFlow.getInit = (init) => ({
-  data: init,
-  pending: false,
-  error: false,
-  errorMessage: "",
-  done: false
-});
